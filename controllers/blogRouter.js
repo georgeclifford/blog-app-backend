@@ -36,9 +36,36 @@ router.post("/register", async (req, res) => {
 	});
 });
 
-router.get("/view", async (req, res) => {
-	let data = await userModel.find();
-	res.json(data);
+router.post("/login", async (req, res) => {
+	let data = req.body;
+	let email = req.body.email;
+	let input = await userModel.findOne({ email: email });
+	if (!input) {
+		return res.json({
+			status: "Invalid User!",
+		});
+	} else {
+		console.log(input);
+		let dbPass = input.password;
+		let orgPass = req.body.password;
+		console.log(dbPass);
+		console.log(orgPass);
+		const match = await bcrypt.compare(orgPass, dbPass);
+		if (!match) {
+			return res.json({
+				status: "Incorrect Password!",
+			});
+		} else {
+			res.json({
+				status: "success",
+			});
+		}
+	}
 });
+
+// router.get("/view", async (req, res) => {
+// 	let data = await userModel.find();
+// 	res.json(data);
+// });
 
 module.exports = router;
