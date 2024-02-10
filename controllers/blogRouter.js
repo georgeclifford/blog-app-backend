@@ -45,11 +45,8 @@ router.post("/login", async (req, res) => {
 			status: "Invalid User!",
 		});
 	} else {
-		console.log(input);
 		let dbPass = input.password;
 		let orgPass = req.body.password;
-		console.log(dbPass);
-		console.log(orgPass);
 		const match = await bcrypt.compare(orgPass, dbPass);
 		if (!match) {
 			return res.json({
