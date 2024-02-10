@@ -47,7 +47,7 @@ router.post("/login", async (req, res) => {
 	} else {
 		let dbPass = input.password;
 		let orgPass = req.body.password;
-		const match = bcrypt.compare(orgPass, dbPass);
+		const match = await bcrypt.compare(orgPass, dbPass);
 		if (!match) {
 			return res.json({
 				status: "Incorrect Password!",
@@ -55,6 +55,7 @@ router.post("/login", async (req, res) => {
 		} else {
 			res.json({
 				status: "success",
+				userData: input
 			});
 		}
 	}
